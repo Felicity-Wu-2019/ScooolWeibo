@@ -5,6 +5,7 @@ module.exports={
     entry:{
         index:'./src/index.js',
         framework:['react','react-dom'],
+        
     },
 
     output:{
