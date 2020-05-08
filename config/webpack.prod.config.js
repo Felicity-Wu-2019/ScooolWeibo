@@ -5,6 +5,9 @@ const HtmlWebpackPlugin=require('html-webpack-plugin');
 const {CleanWebpackPlugin}=require('clean-webpack-plugin')//用来清理旧的打包文件
 const UglifyJsPlugin=require('uglifyjs-webpack-plugin');//压缩js文件大小
 
+const MiniCssExtractPlugin=require('mini-css-extract-plugin');//打包单独css文件
+const OptimizeCssAssetsPlugin=require('optimize-css-assets-webpack-plugin');//压缩css文件
+
 module.exports=merge(common,{
     mode:'production',
 
@@ -12,8 +15,42 @@ module.exports=merge(common,{
         filename:'js/[name].[chunkhash:8].bundle.js',//会代替common里的设置
     },
 
+    module:{//遇到后缀名.css的文件，webpack先用css-loader加载器去解析这个文件。遇到@import等语句会将相应样式文件引入
+        rules:[//计算完css再使用style-loader生成一个style标签放去head里
+        {
+            test:/\.css$/,
+            use:[
+                //'style-loader',
+                MiniCssExtractPlugin.loader,
+                'css-loader',//webpack loader的执行顺序是从右到左
+                'postcss-loader'
+            ]
+        },
+        {
+            test:/\.less$/,
+            use:[
+                MiniCssExtractPlugin.loader,
+                'css-loader',
+                'postcss-loader',
+                'less-loader'
+            ]
+        },
+       
+        ]
+    },
+
     optimization:{//抽离index公共代码
-        minimizer:[new UglifyJsPlugin()],
+        minimizer:[
+            new UglifyJsPlugin(),
+            new OptimizeCssAssetsPlugin({
+                assetNameRegExp:/\.css$/g,//正则表达式，用于匹配需要优化或压缩的资源名
+                cssProcessor:require("cssnano"),//用于压缩和优化css的处理器
+                cssProcessorPluginOptions:{
+                    preset:['default',{discardComments:{removeAll:true}}]//去除注释
+                },
+                canPrint:true//表示插件能够在console中打印消息
+            })
+        ],
         splitChunks:{
             chunks:'all',
             minSize:3000,
@@ -46,7 +83,12 @@ module.exports=merge(common,{
                 collapseWhitespace:true,//去除空格
             },
         }),
-        new CleanWebpackPlugin()//正常来说new要传入dist文件路径参数，但上面定义是{}所有不用
+        new CleanWebpackPlugin(),//正常来说new要传入dist文件路径参数，但上面定义是{}所有不用
+
+        new MiniCssExtractPlugin({
+            filename:'css/[name].[hash].css',
+            chunkFilename:'css/[id].[hash].css',
+        })
     ],
 
 
