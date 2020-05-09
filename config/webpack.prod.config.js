@@ -12,7 +12,8 @@ module.exports=merge(common,{
     mode:'production',
 
     output:{
-        filename:'js/[name].[chunkhash:8].bundle.js',//会代替common里的设置
+        //filename:'js/[name].[chunkhash:8].bundle.js',//会代替common里的设置
+        filename:'js/[name].bundle.js',
     },
 
     module:{//遇到后缀名.css的文件，webpack先用css-loader加载器去解析这个文件。遇到@import等语句会将相应样式文件引入
@@ -76,7 +77,7 @@ module.exports=merge(common,{
     plugins:[
         new HtmlWebpackPlugin({
             filename:'index.html',//打包之后的名字
-            template:'public/index.html',//以我们自己定义的html为模板来写
+            template:'views/index.ejs',//以我们自己定义的html为模板来写
             inject:'body',//在body后引入
             minify:{//压缩html文件
                 removeComments:true,//去除注释

@@ -1,21 +1,38 @@
 import React from 'react';
 import{Link} from 'react-router-dom';
+import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 
-export default function Header(props){
-    const{usename}=props;
+export default class Header extends React.Component{
+    constructor(props){
+        super(props);
+        this.toggleNavbar=this.toggleNavbar.bind(this);
+        this.state={
+            isOpen:false,
+            
+        };
+    }
 
-    return(
-        <header>
-            <h1>SchoolWeiBo</h1>
-            <div className="use-menu">
-                <h2>Welcome {usename}</h2>
-                <nav>
-                    <ul>
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to="/account/profile/captainCode">Profile</Link></li>
-                    </ul>
-                </nav>
-            </div>
-        </header>
-    );
+    toggleNavbar(){
+        this.setState({
+            isOpen:!this.state.isOpen,
+        });
+    }
+
+    render(){
+        return(
+            <header className="App">
+                <Navbar color="faded" light toggleable>
+                    <NavbarToggler right onClick={this.toggleNavbar} />
+                    <NavbarBrand tag={Link} to="/">SchoolWeiBo</NavbarBrand>
+                    <Collapse isOpen={this.state.isOpen} navbar>
+                        <Nav className="ml-auto" navbar>
+                            <NavItem>
+                                <NavLink tag={Link} to="/account/login">Log In</NavLink>
+                            </NavItem>
+                        </Nav>
+                    </Collapse>
+                </Navbar>
+            </header>
+        )
+    }
 }

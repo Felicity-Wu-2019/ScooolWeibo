@@ -6,10 +6,12 @@ const common=require('./webpack.common.config');
 const webpack=require('webpack');
 const HtmlWebpackPlugin=require('html-webpack-plugin');
 
+
 module.exports=merge(common,{
     mode:'development',
     output:{
-        filename:'js/[name].[hash:8].bundle.js',
+        //filename:'js/[name].[hash:8].bundle.js',
+        filename:'js/[name].bundle.js',
     },
 
     module:{//遇到后缀名.css的文件，webpack先用css-loader加载器去解析这个文件。遇到@import等语句会将相应样式文件引入
@@ -31,9 +33,10 @@ module.exports=merge(common,{
                 'less-loader'
             ]
         },
-       
+
         ]
     },
+
 
     devServer:{
         contentBase:path.resolve(__dirname,'../dist'),
@@ -44,9 +47,15 @@ module.exports=merge(common,{
     },
     plugins:[
         new HtmlWebpackPlugin({
-            template:'public/index.html',
+            filename:'template.html',//打包之后的名字
+            template:'./views/index.ejs',
             inject:'body',
-            hash:false
+            path:'public/',
+            hash:false,
+            minify:{//压缩html文件
+                removeComments:true,//去除注释
+                collapseWhitespace:true,//去除空格
+            },
         }),
         new webpack.HotModuleReplacementPlugin(),//webpack的热更插件
     ]

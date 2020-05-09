@@ -6,7 +6,7 @@ export default function HomePage()
         
             <div className="row">
                 <div className="col-sm-12 col-md-8">
-                    <p>这是主页</p>
+                    <p>it is Homeage</p>
                 </div>
             </div>
        
