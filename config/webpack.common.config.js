@@ -18,7 +18,7 @@ module.exports={
             {
                 test:/\.(js|jsx)$/,
                 use:'babel-loader',//使用babel-loader必须的属性
-                exclude:/node_modules/,//排除node_modules的文件
+                exclude:/(node_modules|public\/)/,//排除node_modules的文件
             },
             {
                 test:/\.(jpg|png|gif)$/,//遇到jpg.png.gif等后缀的文件，使用url-loader进行预处理

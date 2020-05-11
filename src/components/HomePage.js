@@ -1,12 +1,15 @@
 import React from "react";
+import { Button } from "reactstrap";
 
-export default function HomePage()
+export default function HomePage(props)
 {
+    const{decrementFunction,incrementFunction}=props;
     return(
         
             <div className="row">
                 <div className="col-sm-12 col-md-8">
-                    <p>it is Homeage</p>
+                <Button onClick={incrementFunction}>Increment</Button>
+                <Button onClick={decrementFunction}>Decrement</Button>
                 </div>
             </div>
        

@@ -11,10 +11,14 @@ const LocalStrategy=require('passport-local');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
+const api=require('./routes/api/index');
+
 const webpack=require('webpack');
 const webpackConfig=require('./config/webpack.dev.config');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
+
+const authentication=require('./routes/api/authentication');
 
 const app = express();
 mongoose.connect('mongodb://localhost/schoolWeiBo');//使用本地的mongodb
@@ -28,25 +32,26 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(require('express-session')({
-  secret:'any random string can go here',//您的“秘密”用于创建一个散列，使用该散列对会话请求进行“签名”，以便服务器知道它们来自正确的位置
-  resave:false,
-  saveUninitialized:false
+  secret: 'any random string can go here',
+  resave: false,
+  saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
-app.use('/', indexRouter);
+app.use('/api',api);
 app.use('/users', usersRouter);
+app.use('/', indexRouter);
+app.use('/api/authentication', authentication);
 
-//Configure Passport
+//Passport和数据模型连接
 const User = require('./models/user');
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
