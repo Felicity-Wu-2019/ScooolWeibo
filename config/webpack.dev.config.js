@@ -41,7 +41,7 @@ module.exports=merge(common,{
     devServer:{
         contentBase:path.resolve(__dirname,'../public'),
         open:true,
-        port:9000,
+        port:3000,
         compress:true,
         hot:true
     },

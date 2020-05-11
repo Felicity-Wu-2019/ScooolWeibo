@@ -5,7 +5,6 @@ module.exports={
     entry:{
         index:'./src/index.js',
         framework:['react','react-dom'],
-        
     },
 
     output:{
@@ -30,7 +29,20 @@ module.exports={
                         limit:8192,//文件大于8192b就用file-loader，把图片正常打包成一个单独图片文件到目录下，小于8192b就插入bundle.js文件
                     },
                 }
-            }
+            },
+            {
+                test:/\.(eot|ttf|svg|woff|woff2)$/,
+                use:{
+                    loader:'file-loader',
+                    options:{
+                        name:'[name]_[hash].[ext]',
+                        outputPath:'font/'
+                    }
+                }
+            },
         ]
-    }
+    },
+
+    
+    
 }

@@ -6,12 +6,14 @@ import ProfilePage from './components/ProfilePage';
 import Header from './components/Header';
 import LoginPage from './components/LoginPage';
 import HomePageContainer from './home/HomePageContainer';
+import Navigationbar from './components/Navigationbar';
 
 export default function App(props) { 
     return(
         <Router>
         <div className="App">
-        <Header usename="anonymous" />
+        <Navigationbar />
+        <Header />   
         <p>{props.progress}</p>
         <section className="page-content container-fluid">
         <Route exact path="/" component={HomePageContainer} />

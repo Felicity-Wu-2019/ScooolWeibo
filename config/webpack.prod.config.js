@@ -1,5 +1,6 @@
 const merge=require('webpack-merge');//webpack-merge通过通用设置，我们不必再环境特定的配置中重复代码
 const common=require('./webpack.common.config');
+const webpack=require('webpack');
 
 const HtmlWebpackPlugin=require('html-webpack-plugin');
 const {CleanWebpackPlugin}=require('clean-webpack-plugin')//用来清理旧的打包文件
@@ -36,7 +37,14 @@ module.exports=merge(common,{
                 'less-loader'
             ]
         },
-       
+       {
+           test:/\.(sass|scss)$/,
+           use:[
+               MiniCssExtractPlugin.loader,
+               'css-loader',
+               'sass-loader'
+           ]
+       },
         ]
     },
 
@@ -89,7 +97,7 @@ module.exports=merge(common,{
         new MiniCssExtractPlugin({
             filename:'css/[name].[hash].css',
             chunkFilename:'css/[id].[hash].css',
-        })
+        }),
     ],
 
 
